@@ -1,0 +1,18 @@
+# https://github.com/bottlerocket-os/bottlerocket/blob/develop/README.md#description-of-settings
+[settings.kubernetes]
+api-server          = "${apiserver_endpoiny}"
+cluster-certificate = "${cluster_certificate_authority_b64}"
+cluster-name        = "${cluster_id}"
+
+${bootstrap_extra_args}
+
+# Hardening based on https://github.com/bottlerocket-os/bottlerocket/blob/develop/SECURITY_GUIDANCE.md
+
+[settings.kernel]
+lockdown = "integrity"
+
+[settings.host-containers.admin]
+enabled = ${enable_admin_container}
+
+[settings.host-containers.control]
+enabled = ${enable_control_container}
