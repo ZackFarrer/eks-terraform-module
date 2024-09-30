@@ -19,8 +19,8 @@ locals {
     cluster_id                        = aws_eks_cluster.eks_cluster.id
     apiserver_endpoint                = aws_eks_cluster.eks_cluster.endpoint
     cluster_certificate_authority_b64 = aws_eks_cluster.eks_cluster.certificate_authority[0].data
-    bootstrap_extra_args              = var.eks_bootstrap_extra_args
-    kubelet_extra_args                = var.kubelet_extra_args
+    bootstrap_extra_args              = var.eks_nodegroup_bootstrap_extra_args
+    kubelet_extra_args                = var.eks_nodegroup_kubelet_extra_args
   })
 
   al2023_userdata_path = "${path.module}/templates/userdata-al2023.sh"
@@ -36,12 +36,17 @@ locals {
     cluster_id                        = aws_eks_cluster.eks_cluster.id
     apiserver_endpoint                = aws_eks_cluster.eks_cluster.endpoint
     cluster_certificate_authority_b64 = aws_eks_cluster.eks_cluster.certificate_authority[0].data
-    bootstrap_extra_args              = var.eks_bootstrap_extra_args
-    kubelet_extra_args                = var.kubelet_extra_args
+    bootstrap_extra_args              = var.eks_nodegroup_bootstrap_extra_args
+    kubelet_extra_args                = var.eks_nodegroup_kubelet_extra_args
     enable_admin_container            = true
     enable_control_container          = true
   })
   
   userdata = var.ami_family == "Bottlerocket" ? local.bottlerocket_userdata : var.ami_family == "AL2023" ? local.al2023_userdata : local.al2_userdata
   ami_family_lower = lower(var.ami_family)
+
+  combined_default_and_data_tags = merge(
+    data.aws_default_tags.default_resource_tags.tags,
+    var.tags,
+  )
 }

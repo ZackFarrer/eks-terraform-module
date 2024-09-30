@@ -36,23 +36,22 @@ resource "aws_eks_cluster" "eks_cluster" {
     depends_on = [aws_iam_role_policy_attachment.eks_cluster_role_default_policy_attachments] 
 }
 
-data "aws_iam_policy_document "eks_cluster_assume_role_policy_document" {
+data "aws_iam_policy_document" "eks_cluster_assume_role_policy_document" {
   statement {
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
-    Principals {
-        type        = "Service"
-        identifiers = ["eks.amazonaws.com"]
+    principals {
+      type        = "Service"
+      identifiers = ["eks.amazonaws.com"]
     }
   }
 }
-"
 
 resource "aws_iam_role" "eks_cluster_iam_role" {
-    name                       = "${var.cluster_name}-cluster-role"
-    forceforce_detach_policies = true
-    assume_assume_role_policy  =  data.aws_iam_policy_document.eks_cluster_assume_role_policy_document
-    tags                       = var.tags
+    name                  = "${var.cluster_name}-cluster-role"
+    force_detach_policies = true
+    assume_role_policy    =  data.aws_iam_policy_document.eks_cluster_assume_role_policy_document
+    tags                  = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "eks_cluster_role_default_policy_attachments" {
@@ -62,7 +61,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_role_default_policy_attac
     ])) : k => v }
 
     policy_arn = each.value
-    role       = aws_iam_role.eks_cluster_iam_role
+    role       = aws_iam_role.eks_cluster_iam_role.name
 }
 
 # OIDC is required if using IAM roles for Service Accounts (IRSA) but not if using pod identity addon

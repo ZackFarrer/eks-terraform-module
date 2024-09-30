@@ -1,6 +1,6 @@
 # https://github.com/bottlerocket-os/bottlerocket/blob/develop/README.md#description-of-settings
 [settings.kubernetes]
-api-server          = "${apiserver_endpoiny}"
+api-server          = "${apiserver_endpoint}"
 cluster-certificate = "${cluster_certificate_authority_b64}"
 cluster-name        = "${cluster_id}"
 

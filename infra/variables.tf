@@ -3,7 +3,7 @@ variable "cluster_name" {
     type        = string
 }
 
-variable "eks_k8s_cluster_version" {
+variable "eks_k8s_version" {
     description = "Kubernetes version of the EKS cluster"
     type        = string
 }
@@ -41,7 +41,7 @@ variable "tags" {
     default     = {}
 }
 
-variable "support_type" {
+variable "eks_support_type" {
     description = "Support type to use for the cluster. If the cluster is set to EXTENDED, it will enter extended support at the end of standard support. If the cluster is set to STANDARD, it will be automatically upgraded at the end of standard support."
     type        = string
     default     = "EXTENDED"
@@ -97,6 +97,78 @@ variable "eks_cluster_access_entries_and_associations" {
     }))
     default = {}
 }
+
+variable "eks_nodegroup_labels" {
+    description = "Map of kubernetes labels to be applied to the EKS Node Group"
+    type        = map(string)
+    default     = {}
+}
+
+variable "eks_nodegroup_capacity_type" {
+    description = "Capacity type for the EKS Node Group"
+    type        = string
+    default     = "ON_DEMAND"
+}
+
+variable "eks_nodegroup_instance_types" {
+    description = "Instance types for the EKS Node Group"
+    type        = list(string)  
+}
+
+variable "eks_nodegroup_force_update_version" {
+    description = "Force Update version for the EKS Node Group"
+    type        = bool
+    default     = false
+}
+
+variable "eks_nodegroup_update_config" {
+    description = "Update configuration for the EKS Node Group"
+    type        = object({
+      max_unavailable_percentage = number
+    })
+    default = {
+      max_unavailable_percentage = 33
+    }
+}
+
+variable "eks_nodegroup_block_device_mappings" {
+    description = "List of EBS block device mappings for the EKS Node Group"
+    type        = list(object({
+        device_name = string
+        ebs         = object({
+          delete_on_termination = optional(bool, null)
+          iops                  = optional(number, null)
+          snapshot_id           = optional(string,null)
+          throughput            = optional(number, null)
+          volume_size           = number
+        })
+        no_device    = optional(bool, null)
+        virtual_name = optional(string, null)
+    }))
+    default = []
+}
+
+variable "eks_nodegroup_enable_monitoring" {
+    description = "Enable monitoring for the EKS Node Group"
+    type        = bool
+    default     = false
+}
+
+variable "eks_nodegroup_bootstrap_extra_args" {
+    description = "Extra arguments for the EKS Node Group bootstrap script"
+    type        = string
+    default     = ""  
+}
+
+variable "eks_nodegroup_kubelet_extra_args" {
+    description = "Extra arguments for the kubelet configuration"
+    type        = string
+    default     = ""  
+}
+
+
+
+
 
 
 

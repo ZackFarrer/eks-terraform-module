@@ -22,7 +22,7 @@ resource "aws_eks_access_policy_association" "cluster-role-access-policy-associa
 
 resource "aws_eks_access_entry" "nodegroup-role-access-entry" {
     cluster_name  = var.cluster_name
-    principal_arm = aws_iam_role.eks_nodegroup_iam_role.arn
+    principal_arn = aws_iam_role.eks_nodegroup_iam_role.arn
     type          = "EC2_LINUX"
     tags          = var.tags
 
@@ -31,7 +31,7 @@ resource "aws_eks_access_entry" "nodegroup-role-access-entry" {
 
 resource "aws_eks_access_entry" "karpenter-role-access-entry" {
     cluster_name  = var.cluster_name
-    principal_arm = aws_iam_role.node.arn
+    principal_arn = aws_iam_role.node.arn
     type          = "EC2_LINUX"
     tags          = var.tags
 
