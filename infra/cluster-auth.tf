@@ -29,15 +29,6 @@ resource "aws_eks_access_entry" "nodegroup-role-access-entry" {
     depends_on = [aws_eks_cluster.eks_cluster]
 }
 
-resource "aws_eks_access_entry" "karpenter-role-access-entry" {
-    cluster_name  = var.cluster_name
-    principal_arn = aws_iam_role.node.arn
-    type          = "EC2_LINUX"
-    tags          = var.tags
-
-    depends_on = [aws_eks_cluster.eks_cluster]
-}
-
 resource "aws_eks_access_entry" "eks_cluster_auth_access_entry" {
     for_each = var.eks_cluster_access_entries_and_associations
 

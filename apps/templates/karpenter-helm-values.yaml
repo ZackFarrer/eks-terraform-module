@@ -1,0 +1,29 @@
+replicas: 3
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: karpenter.sh/nodepool
+              operator: DoesNotExist
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - topologyKey: "kubernetes.io/hostname"
+tolerations:
+  - key: "karpenter"
+    operator: "Equal"
+    value: "true"
+    effect: "NoSchedule"
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: ${role_arn}
+controller:
+  image:
+    repository: public.ecr.aws/karpenter/controller
+    tag: 0.37.0
+    digest: sha256:157f478f5db1fe999f5e2d27badcc742bf51cc470508b3cebe78224d0947674f
+settings:
+  clusterName: ${cluster_name}
+  clusterEndpoint: ${cluster_endpoint}
+  interruptionQueue: ${queue_name}
+  

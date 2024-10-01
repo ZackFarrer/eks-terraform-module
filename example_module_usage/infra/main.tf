@@ -1,0 +1,29 @@
+module "eks_cluster" {
+  source = "git::https://github.com/ZackFarrer/eks-terraform-module.git//infra?ref=main" 
+
+  cluster_name                                  = var.cluster_name
+  eks_k8s_version                               = var.eks_k8s_version
+  eks_oidc_provider_openid_connect_client_list  = var.eks_oidc_provider_openid_connect_client_list
+  eks_oidc_provider_thumbprint_list             = var.eks_oidc_provider_thumbprint_list
+  eks_cluster_subnet_ids                        = var.eks_cluster_subnet_ids
+  eks_control_plane_log_types                   = var.eks_control_plane_log_types
+  tags                                          = var.tags
+  eks_support_type                              = var.eks_support_type
+  coredns_config                                = var.coredns_config
+  vpc_cni_config                                = var.vpc_cni_config
+  kube_proxy_config                             = var.kube_proxy_config
+  vpc_id                                        = var.vpc_id
+  ami_id                                        = var.ami_id
+  ami_architecture                              = var.ami_architecture
+  ami_family                                    = var.ami_family
+  eks_cluster_access_entries_and_associations   = var.eks_cluster_access_entries_and_associations
+  eks_nodegroup_labels                          = var.eks_nodegroup_labels
+  eks_nodegroup_capacity_type                   = var.eks_nodegroup_capacity_type
+  eks_nodegroup_instance_types                  = var.eks_nodegroup_instance_types
+  eks_nodegroup_force_update_version            = var.eks_nodegroup_force_update_version
+  eks_nodegroup_update_config                   = var.eks_nodegroup_update_config
+  eks_nodegroup_block_device_mappings           = var.eks_nodegroup_block_device_mappings
+  eks_nodegroup_enable_monitoring               = var.eks_nodegroup_enable_monitoring
+  eks_nodegroup_bootstrap_extra_args            = var.eks_nodegroup_bootstrap_extra_args
+  eks_nodegroup_kubelet_extra_args              = var.eks_nodegroup_kubelet_extra_args
+}

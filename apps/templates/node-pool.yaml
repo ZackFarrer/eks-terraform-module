@@ -1,0 +1,45 @@
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: ${node_pool_name}
+spec:
+  template:
+    metadata:
+      labels:
+        intent: apps
+    spec:
+      nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
+        name: ${node_class_name}
+      expireAfter: ${expire_after}
+      requirements:
+        - key: "topology.kubernetes.io/zone"
+          operator: In
+          values: ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
+        - key: "kubernetes.io/arch"
+          operator: In
+          values: ["amd64"]
+        - key: "kubernetes.io/os"
+          operator: In
+          values: ["linux"]
+        - key: "karpenter.sh/capacity-type"
+          operator: In
+          values: ${jsonencode(capacity_type)}
+        - key: "karpenter.k8s.aws/instance-category"
+          operator: In
+          values: ${jsonencode(instance_category)}
+        - key: "karpenter.k8s.aws/instance-size"
+          operator: In
+          values: ${jsonencode(instance_size)}
+        - key: "karpenter.k8s.aws/instance-generation"
+          operator: In
+          values: ${jsonencode(instance_generation)}
+  disruption:
+    consolidationPolicy: ${consolidation_policy}
+    consolidateAfter: ${consolidate_after}
+  limits:
+    cpu: "1000"
+    memory: 1000Gi
+
+  

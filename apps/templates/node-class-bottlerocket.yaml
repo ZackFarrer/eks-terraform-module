@@ -1,0 +1,50 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: ${node_class_name}
+spec:
+  amiFamily: Bottlerocket
+  amiSelectorTerms:
+    - id: ${ami_id}
+  userData: |
+    # https://github.com/bottlerocket-os/bottlerocket/blob/develop/README.md#description-of-settings
+    [settings.kubernetes]
+    api-server          = "${apiserver_endpoint}"
+    cluster-certificate = "${cluster_certificate_authority_b64}"
+    cluster-name        = "${cluster_id}"
+
+    ${bootstrap_extra_args}
+
+    # Hardening based on https://github.com/bottlerocket-os/bottlerocket/blob/develop/SECURITY_GUIDANCE.md
+
+    [settings.kernel]
+    lockdown = "integrity"
+
+    [settings.host-containers.admin]
+    enabled = ${enable_admin_container}
+
+    [settings.host-containers.control]
+    enabled = ${enable_control_container}
+  role: ${karpenter_role}
+  blockDeviceMappings:
+    - deviceName: /dev/xvda
+      ebs:
+        volumeSize: 100Gi
+        volumeType: gp3
+        encrypted: true
+        deleteOnTermination: true
+    - deviceName: /dev/xvdb
+      ebs:
+        volumeSize: 100Gi
+        volumeType: gp3
+        encrypted: true
+        deleteOnTermination: true
+  subnetSelectorTerms:
+    - id: ${subnet_id1}
+    - id: ${subnet_id2}
+    - id: ${subnet_id3}
+  securityGroupSelectorTerms:
+    - id: ${cluster_sg_id}
+  tags:
+    workload: apps
+   node-type: bottlerocket

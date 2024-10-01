@@ -76,6 +76,11 @@ variable "ami_id" {
     default     = ""
 }
 
+variable "public_ami_search_filter" {
+    description = "Filter to query public AMI which is copied and renamed to fit naming convention in private AMI repo"
+    type        = string
+}
+
 variable "ami_architecture" {
     description = "AMI architecture to be used for nodegroup and karpenter EC2NodeClass nodes"
     type        = string

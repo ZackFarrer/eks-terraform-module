@@ -1,0 +1,30 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: ${node_class_name}
+spec:
+  amiFamily: AL2
+  amiSelectorTerms:
+    - id: ${ami_id}
+  userData: |
+    # Bootstrap and join cluster
+    /etc/eks/bootstrap.sh '${cluster_id}' --b64-cluster-ca '${cluster_certificate_authority_b64}' --apiserver-endpoint '${apiserver_endpoint}'
+
+    # Add other bootstrap config required here
+  role: ${karpenter_role}
+  blockDeviceMappings:
+    - deviceName: /dev/xvda
+      ebs:
+        volumeSize: 100Gi
+        volumeType: gp3
+        encrypted: true
+        deleteOnTermination: true
+  subnetSelectorTerms:
+    - id: ${subnet_id1}
+    - id: ${subnet_id2}
+    - id: ${subnet_id3}
+  securityGroupSelectorTerms:
+    - id: ${cluster_sg_id}
+  tags:
+    workload: apps
+   node-type: al2
