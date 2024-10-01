@@ -14,7 +14,7 @@ provider "helm" {
 }
 
 registry {
-  url      = "oci://${data.aws_caller_identity.current.account_id}.dkr.ecr.eu-west-2.amazonaws.com"
+  url      = "oci://${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com"
   username = data.aws_ecr_authorization_token.token.user_name
   password = data.aws_ecr_authorization_token.token.password
 }
