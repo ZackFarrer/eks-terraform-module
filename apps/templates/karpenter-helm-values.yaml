@@ -1,3 +1,5 @@
+# dnsPolicy set to default ensures karpenter pods do not rely on coredns for IP translation
+dnsPolicy: Default
 replicas: 3
 affinity:
   nodeAffinity:
@@ -19,9 +21,9 @@ serviceAccount:
     eks.amazonaws.com/role-arn: ${role_arn}
 controller:
   image:
-    repository: public.ecr.aws/karpenter/controller
-    tag: 0.37.0
-    digest: sha256:157f478f5db1fe999f5e2d27badcc742bf51cc470508b3cebe78224d0947674f
+    repository: ${account_id}.dkr.ecr.${region}.amazonaws.com/karpenter/controller
+    tag: ${image_tag}
+    digest: ${image_digest}
 settings:
   clusterName: ${cluster_name}
   clusterEndpoint: ${cluster_endpoint}

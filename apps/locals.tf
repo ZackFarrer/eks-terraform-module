@@ -15,5 +15,9 @@ locals {
     queue_name       = module.karpenter.queue_name
     role_arn         = module.karpenter.iam_role_arn
     cluster_endpoint = data.aws_eks_cluster.eks_cluster.endpoint
+    account_id       = local.account_id
+    region           = data.aws_region.current.name
+    image_tag        = "1.0.3"
+    image_digest     = "abc123"
   })
 }
