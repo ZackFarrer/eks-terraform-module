@@ -93,4 +93,4 @@ spec:
     - id: ${cluster_sg_id}
   tags:
     workload: apps
-   node-type: al2023
+    node-type: al2023

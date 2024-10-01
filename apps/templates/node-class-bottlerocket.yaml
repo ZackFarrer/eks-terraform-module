@@ -47,4 +47,4 @@ spec:
     - id: ${cluster_sg_id}
   tags:
     workload: apps
-   node-type: bottlerocket
+    node-type: bottlerocket

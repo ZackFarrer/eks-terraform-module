@@ -27,4 +27,4 @@ spec:
     - id: ${cluster_sg_id}
   tags:
     workload: apps
-   node-type: al2
+    node-type: al2
